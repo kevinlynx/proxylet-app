@@ -1,6 +1,8 @@
 # qiyan.zm@alibaba-inc.com
-import proxylet, sys
+import proxylet, sys, re
+from proxylet import relocate
 from proxylet.relocate import Relocator, UrlInfo
+from paste import httpheaders as hdr
 
 routes = [
     ('http://localhost:7070/query-player', 'http://localhost:7070'),
@@ -15,8 +17,12 @@ def to_relocator(route):
 relocators = filter(lambda r: r, map(to_relocator, routes))
 
 def mapper(req):
+    ref_str = hdr.REFERER(req.headers)
+    referer = UrlInfo(ref_str) if ref_str else None
     for r in relocators: 
         if r.matchesLocal(req.reqURI):
+            return r.mapping
+        if referer and r.matchesLocal(referer.path):
             return r.mapping
     url = UrlInfo(routes[-1])
     return (url.host, url.port, None)
