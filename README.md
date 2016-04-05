@@ -7,4 +7,8 @@ lightweight reverse proxy patched from proxylet. See proxy-app.py for configurat
 * eventlet
 * paste
 
+## Usage
+
+1. config `routes' in proxy-app.py
+2. run `python proxy-app.py` 
 

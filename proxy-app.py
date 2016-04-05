@@ -4,6 +4,9 @@ from proxylet import relocate
 from proxylet.relocate import Relocator, UrlInfo
 from paste import httpheaders as hdr
 
+'''
+[(local url, remote url), (local url2, remote url2), default url]
+'''
 routes = [
     ('http://localhost:7070/query-player', 'http://localhost:7070'),
     'http://localhost:5000'
@@ -29,7 +32,7 @@ def mapper(req):
 
 def main(port):
     try:
-        proxylet.serve('', 7110, mapper)
+        proxylet.serve('', port, mapper)
     except (SystemExit, KeyboardInterrupt):
         print('bye')
         
